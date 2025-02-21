@@ -1,0 +1,8 @@
+pypdf
+openai
+numpy
+pandas
+langchain
+sentence-transformers
+faiss-cpu
+openpyxl
