@@ -6,3 +6,5 @@ langchain
 sentence-transformers
 faiss-cpu
 openpyxl
+jinja2
+flask
