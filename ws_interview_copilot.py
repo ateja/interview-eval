@@ -5,6 +5,7 @@ from vectordb import VectorInterviewDb
 from copilot import InterviewCopilot
 import os
 import logging
+import json
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -19,6 +20,13 @@ vector_db = VectorInterviewDb(VECTOR_DB_FILE)
 # Load Jinja2 template from file
 with open("prompt.jinja2", "r") as file:
     jinja_template = file.read()
+
+# Load sample data from files
+with open("docs/training data/sample_pdf.txt", "r") as file:
+    SAMPLE_PDF_TEXT = file.read()
+
+with open("docs/training data/sample_questions_from_pdf.json", "r") as file:
+    SAMPLE_JSON = json.dumps(json.load(file))  # Convert dict to JSON string
 
 # Initialize OpenAI client and copilot
 openai_client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
@@ -55,7 +63,7 @@ def process_copilot():
         logger.info("PDF Text extracted: %s", pdf_text[:200] + "..." if len(pdf_text) > 200 else pdf_text)
         logger.info("User Query: %s", user_query)
         
-        response = copilot.process_query(user_query, pdf_text)
+        response = copilot.process_query(user_query, pdf_text, sample_pdf_text=SAMPLE_PDF_TEXT, sample_json=SAMPLE_JSON)
         
         return jsonify({"response": response}), 200
     except Exception as e:

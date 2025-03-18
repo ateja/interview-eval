@@ -20,11 +20,13 @@ class InterviewCopilot:
         self.vector_db = vector_db
         self.openai_client = openai_client
 
-    def process_query(self, user_query: str, pdf_text: str) -> str:
+    def process_query(self, user_query: str, pdf_text: str, sample_pdf_text: str = "", sample_json: str = "{}") -> str:
         """
         Processes the user query using RAG and OpenAI LLM.
         :param user_query: The query string provided by the user.
         :param pdf_text: The text extracted from the PDF document.
+        :param sample_pdf_text: Example PDF text for the template.
+        :param sample_json: Example JSON for the template.
         :return: AI-generated response.
         """
         rag_results = self.vector_db.search_faiss(user_query, top_k=5)
@@ -32,8 +34,8 @@ class InterviewCopilot:
         
         prompt = self.renderer.render(
             user_query=user_query,
-            single_shot_prompt_pdf_text="",
-            single_shot_prompt_json="{}",
+            single_shot_prompt_pdf_text=sample_pdf_text,
+            single_shot_prompt_json=sample_json,
             input_pdf_text=pdf_text,
             rag_results=formatted_rag_results
         )
