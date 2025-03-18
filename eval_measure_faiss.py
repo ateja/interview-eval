@@ -35,14 +35,15 @@ class ModelEvaluation:
         }
 
     def compute_metrics(self, retrieved, ideal):
-        """Compute precision and recall metrics."""
+        """Compute precision, recall, and F1 score metrics."""
         ideal_set = set(ideal)
         retrieved_set = set(retrieved)
 
         precision = len(retrieved_set & ideal_set) / len(retrieved_set) if retrieved_set else 0
         recall = len(retrieved_set & ideal_set) / len(ideal_set) if ideal_set else 0
+        f1_score = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
 
-        return precision, recall
+        return precision, recall, f1_score
 
     def evaluate(self):
         """Evaluate the model's performance on the stored queries."""
@@ -56,14 +57,17 @@ class ModelEvaluation:
             else:
                 retrieved_questions = []
 
-            precision, recall = self.compute_metrics(retrieved_questions, ideal_results)
+            precision, recall, f1_score = self.compute_metrics(retrieved_questions, ideal_results)
 
             evaluation_results.append({
+                "Model": self.model_name,
                 "Query": query,
-                "Retrieved Questions": retrieved_questions,
-                "Ideal Questions": ideal_results,
+                "Retrieved Questions": ", ".join(retrieved_questions),
+                "Ideal Questions": ", ".join(ideal_results),
                 "Precision": precision,
-                "Recall": recall
+                "Recall": recall,
+                "F1 Score": f1_score,
+                "Model Name": self.model_name
             })
 
         return pd.DataFrame(evaluation_results)
@@ -72,8 +76,26 @@ if __name__ == "__main__":
     # Test with different models
     models_to_test = ["all-MiniLM-L6-v2", "all-mpnet-base-v2", "multi-qa-mpnet-base-dot-v1"]
     
-    results = {}
+    all_results = []
+    f1_scores = {}
     for model_name in models_to_test:
         evaluator = ModelEvaluation(model_name)
-        results[model_name] = evaluator.evaluate()
-        print(f"\nResults for {model_name}:\n", results[model_name].to_string(index=False))
+        model_results = evaluator.evaluate()
+        all_results.append(model_results)
+        
+        # Compute average F1 score for the model
+        avg_f1 = model_results["F1 Score"].mean()
+        f1_scores[model_name] = avg_f1
+    
+    # Combine all results into a single DataFrame
+    final_results = pd.concat(all_results, ignore_index=True)
+    
+    # Save results to an Excel file
+    output_file = "docs/model_comparison_results.xlsx"
+    final_results.to_excel(output_file, index=False)
+    
+    print(f"Evaluation results saved to {output_file}")
+    
+    # Print the F1 scores for each model
+    for model, score in f1_scores.items():
+        print(f"Model: {model}, Average F1 Score: {score:.4f}")

@@ -57,8 +57,9 @@ if __name__ == "__main__":
     for file_path in glob.glob("docs/training data/candidate[1]*.pdf"):  # Matches candidate1.pdf, candidate2.pdf, etc.
     #     print(file_path) # Prints the filename (e.g., candidate1.pdf)
         extractor = PDFTextExtractor(file_path)
-        feedback_json = extractor.get_json_feedback()
-        print(feedback_json)
+        print(extractor.text)
+        # feedback_json = extractor.get_json_feedback()
+        # print(feedback_json)
 
     # sections = ["1st Interview", "2nd Interview", "3rd Interview", "4th Interview", "5th Interview"]
     # end_section = "Personality Traits"
