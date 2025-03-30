@@ -1,5 +1,11 @@
 from jinja2 import Template
 import json
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 class PromptRenderer:
     def __init__(self, template_str: str):
@@ -25,6 +31,7 @@ class PromptRenderer:
         except json.JSONDecodeError:
             raise ValueError("Invalid JSON format for single_shot_prompt_json")
         
+        logger.info("template >>>>> %s", self.template)
         return self.template.render(
             user_query=user_query,
             single_shot_prompt_pdf_text=single_shot_prompt_pdf_text,
@@ -36,14 +43,6 @@ class PromptRenderer:
 # Example template
 jinja_template = """
 User Query: {{ user_query }}
-
-Single-Shot Prompt (PDF):
-{{ single_shot_prompt_pdf_text }}
-
-Single-Shot Prompt (JSON):
-{% for key, value in single_shot_prompt_json.items() %}
-  {{ key }}: {{ value }}
-{% endfor %}
 
 Input PDF Text:
 {{ input_pdf_text }}

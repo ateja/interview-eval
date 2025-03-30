@@ -158,28 +158,87 @@ tail_logs() {
 case "$1" in
     "start")
         verify_environment
-        for service in "${SERVICES[@]}"; do
-            start_service "$service"
-        done
+        if [ $# -gt 1 ]; then
+            # Start specific services provided as arguments
+            shift  # Remove the first argument (start)
+            for service in "$@"; do
+                # Check if the service exists in the SERVICES array
+                if [[ " ${SERVICES[@]} " =~ " ${service} " ]]; then
+                    start_service "$service"
+                else
+                    echo -e "${RED}Error: $service is not a valid service${NC}"
+                    echo "Available services: ${SERVICES[@]}"
+                fi
+            done
+        else
+            # Start all services if no specific service is provided
+            for service in "${SERVICES[@]}"; do
+                start_service "$service"
+            done
+        fi
         ;;
     "stop")
-        for service in "${SERVICES[@]}"; do
-            stop_service "$service"
-        done
+        if [ $# -gt 1 ]; then
+            # Stop specific services provided as arguments
+            shift  # Remove the first argument (stop)
+            for service in "$@"; do
+                if [[ " ${SERVICES[@]} " =~ " ${service} " ]]; then
+                    stop_service "$service"
+                else
+                    echo -e "${RED}Error: $service is not a valid service${NC}"
+                    echo "Available services: ${SERVICES[@]}"
+                fi
+            done
+        else
+            # Stop all services if no specific service is provided
+            for service in "${SERVICES[@]}"; do
+                stop_service "$service"
+            done
+        fi
         ;;
     "restart")
         verify_environment
-        for service in "${SERVICES[@]}"; do
-            stop_service "$service"
-            sleep 2
-            start_service "$service"
-        done
+        if [ $# -gt 1 ]; then
+            # Restart specific services provided as arguments
+            shift  # Remove the first argument (restart)
+            for service in "$@"; do
+                if [[ " ${SERVICES[@]} " =~ " ${service} " ]]; then
+                    stop_service "$service"
+                    sleep 2
+                    start_service "$service"
+                else
+                    echo -e "${RED}Error: $service is not a valid service${NC}"
+                    echo "Available services: ${SERVICES[@]}"
+                fi
+            done
+        else
+            # Restart all services if no specific service is provided
+            for service in "${SERVICES[@]}"; do
+                stop_service "$service"
+                sleep 2
+                start_service "$service"
+            done
+        fi
         ;;
     "status")
         verify_environment
-        for service in "${SERVICES[@]}"; do
-            check_status "$service"
-        done
+        if [ $# -gt 1 ]; then
+            # Check status of specific services provided as arguments
+            shift  # Remove the first argument (status)
+            for service in "$@"; do
+                if [[ " ${SERVICES[@]} " =~ " ${service} " ]]; then
+                    check_status "$service"
+                else
+                    echo -e "${RED}Error: $service is not a valid service${NC}"
+                    echo "Available services: ${SERVICES[@]}"
+                fi
+            done
+        else
+            # Check status of all services if no specific service is provided
+            for service in "${SERVICES[@]}"; do
+                check_status "$service"
+            done
+        fi
         ;;
     "logs")
         tail_logs

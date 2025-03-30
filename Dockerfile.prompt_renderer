@@ -1,0 +1,10 @@
+FROM interview-eval-base:latest
+
+# Copy service-specific code
+COPY ws_prompt_renderer.py .
+
+# Expose the port
+EXPOSE 5001
+
+# Run the service
+CMD ["python", "ws_prompt_renderer.py"] 

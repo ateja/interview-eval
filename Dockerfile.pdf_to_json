@@ -1,0 +1,15 @@
+FROM interview-eval-base:latest
+
+# Copy service-specific code
+COPY ws_pdf_to_json.py .
+COPY pdf_to_json.py .
+COPY docs/interview_questions.xlsx ./docs/
+
+# Create uploads directory
+RUN mkdir -p uploads && chmod 777 uploads
+
+# Expose the port
+EXPOSE 5002
+
+# Run the service
+CMD ["python", "ws_pdf_to_json.py"] 

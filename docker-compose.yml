@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  pdf-to-json:
+    build:
+      context: .
+      dockerfile: Dockerfile.pdf_to_json
+    ports:
+      - "5002:5002"
+    volumes:
+      - ./uploads:/app/uploads
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    networks:
+      - interview-eval-network
+
+  interview-copilot:
+    build:
+      context: .
+      dockerfile: Dockerfile.interview_copilot
+    ports:
+      - "5003:5003"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PDF_TO_JSON_URL=http://pdf-to-json:5002/upload
+      - VSEARCH_URL=http://vsearch:5000/search
+      - PROMPT_RENDERER_URL=http://prompt-renderer:5001/render
+    depends_on:
+      - pdf-to-json
+      - vsearch
+      - prompt-renderer
+    networks:
+      - interview-eval-network
+
+  prompt-renderer:
+    build:
+      context: .
+      dockerfile: Dockerfile.prompt_renderer
+    ports:
+      - "5001:5001"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    networks:
+      - interview-eval-network
+
+  vsearch:
+    build:
+      context: .
+      dockerfile: Dockerfile.vsearch
+    ports:
+      - "5000:5000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+
+    networks:
+      - interview-eval-network
+
+networks:
+  interview-eval-network:
+    driver: bridge 

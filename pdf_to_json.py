@@ -54,10 +54,10 @@ class PDFTextExtractor:
 
 
 if __name__ == "__main__":
-    for file_path in glob.glob("docs/training data/candidate[1]*.pdf"):  # Matches candidate1.pdf, candidate2.pdf, etc.
+    for file_path in glob.glob("docs/training data/candidate[3]*.pdf"):  # Matches candidate1.pdf, candidate2.pdf, etc.
     #     print(file_path) # Prints the filename (e.g., candidate1.pdf)
         extractor = PDFTextExtractor(file_path)
-        print(extractor.text)
+        print(extractor.get_json_feedback())
         # feedback_json = extractor.get_json_feedback()
         # print(feedback_json)
 
