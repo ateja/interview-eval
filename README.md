@@ -1,8 +1,8 @@
-# Interview Eval
+# Interview Eval 🚀
 
 Interview Eval is an AI-powered platform that uses Retrieval-Augmented Generation (RAG) to revolutionize the interview evaluation process. It takes interview feedback as input, extracts relevant information, and generates constructive feedback based on structured data. By leveraging the power of Gen AI and natural language processing, Interview Eval helps hiring managers and recruiters streamline their evaluation process, reduce bias, and make more informed hiring decisions.
 
-## Features
+## Features ✨
 
 - **RAG Integration**: Uses retrieval-augmented generation to provide insightful feedback.
 - **PDF to JSON Conversion**: Converts interview feedback PDFs to JSON format for easy processing.
@@ -10,7 +10,7 @@ Interview Eval is an AI-powered platform that uses Retrieval-Augmented Generatio
 - **Vector Database**: Employs FAISS for efficient interview question retrieval.
 - **Dockerized Services**: Each component runs in its own Docker container for modularity and scalability.
 
-## Project Structure
+## Project Structure 🗂️
 
 - `Dockerfile.*`: Docker configurations for different services.
 - `requirements.txt`: Lists all Python dependencies.
@@ -22,7 +22,7 @@ Interview Eval is an AI-powered platform that uses Retrieval-Augmented Generatio
 - `test/`: Directory for unit and integration tests.
 - `manage_services.sh`: Script for managing services.
 
-## Installation
+## Installation 🛠️
 
 1. **Clone the repository**:
    ```bash
@@ -42,7 +42,7 @@ Interview Eval is an AI-powered platform that uses Retrieval-Augmented Generatio
    ./build.sh
    ```
 
-## Usage
+## Usage 🚀
 
 1. **Start the services**:
    ```bash
@@ -61,18 +61,18 @@ Interview Eval is an AI-powered platform that uses Retrieval-Augmented Generatio
    - `/render`: Render prompts using templates.
    - `/copilot`: Process queries with the Interview Copilot.
 
-## Service Management
+## Service Management 🛠️
 
 The `manage_services.sh` script is a utility for managing the various services within the Interview Eval project. It provides a command-line interface to start, stop, restart, and check the status of the services. It also allows you to tail the logs for all services. This is especially usedful while you are developing and making local changes that you want to be hotloaded.
 
-### Key Features
+### Key Features ✨
 
 - **Service Management**: Start, stop, and restart services using simple commands.
 - **Environment Verification**: Checks if the virtual environment and required packages are set up correctly.
 - **Logging**: Consolidates logs for all services into a single file.
 - **Service Status**: Provides the status of each service.
 
-### Usage
+### Usage 🚀
 
 - **Start Services**: 
   ```bash
@@ -103,16 +103,16 @@ The `manage_services.sh` script is a utility for managing the various services w
   ./manage_services.sh logs
   ```
 
-## Contributing
+## Contributing 🤝
 
 1. Fork the repository.
 2. Create a new branch for your feature or bug fix.
 3. Submit a pull request for review.
 
-## License
+## License 📄
 
 This project is licensed under the MIT License.
 
-## Contact
+## Contact 📧
 
 For any inquiries, please contact [ateja at gmail.com].
